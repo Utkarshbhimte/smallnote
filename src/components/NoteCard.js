@@ -30,7 +30,7 @@ const NoteCardStyled = styled.div`
   }
 `
 
-export const NoteCard = ({ noteId }) => {
+export const NoteCard = React.memo(({ noteId }) => {
   const { noteData } = useSelector(state => ({
     noteData: state.notes.data[noteId],
   }))
@@ -51,4 +51,4 @@ export const NoteCard = ({ noteId }) => {
       )}
     </NoteCardStyled>
   )
-}
+})

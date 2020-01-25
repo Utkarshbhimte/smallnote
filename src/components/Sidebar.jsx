@@ -35,13 +35,13 @@ const SidebarStyled = styled.div`
       text-transform: capitalize;
       position: relative;
 
-      .close-btn{
+      .close-btn {
         position: absolute;
         top: 50%;
         right: 1rem;
         transform: translateY(-50%);
-        height: .8rem;
-        width: .8rem;
+        height: 0.8rem;
+        width: 0.8rem;
       }
 
       &.active {
@@ -89,7 +89,9 @@ const Sidebar = () => {
           >
             {tab}
 
-            {activeTab === tab && <CloseIcon className="close-btn" onClick={resetTabClick} />}
+            {activeTab === tab && (
+              <CloseIcon className="close-btn" onClick={resetTabClick} />
+            )}
           </li>
         ))}
       </ul>

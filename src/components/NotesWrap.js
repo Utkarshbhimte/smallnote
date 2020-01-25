@@ -15,7 +15,28 @@ export const NoteCardGrid = styled.div`
 
 export const NotesWrap = () => {
   const { list } = useSelector(state => {
-    return { list: state.notes.list || [] }
+    const {
+      ui: { activeTab },
+      search: { searchTerm },
+    } = state
+
+    let { list } = state.notes
+
+    list = list.filter(noteId => {
+      const noteData = state.notes.data[noteId]
+      // filtering by active tab
+      const tabCondition = !activeTab || noteData[activeTab]
+
+      // filtering by active search
+      const searchCondition =
+        !(searchTerm && !!searchTerm.length) ||
+        (noteData.title && noteData.title.includes(searchTerm)) ||
+        (noteData.text && noteData.text.includes(searchTerm))
+
+      return tabCondition && searchCondition
+    })
+
+    return { list: list || [] }
   })
   return (
     <NoteCardGrid>

@@ -191,13 +191,6 @@ export const AddNote = () => {
 
   const detectBlur = event => {
     const hasClickedOutside = !wrapperRef.current.contains(event.target)
-    console.log(
-      "TCL: AddNote -> hasClickedOutside",
-      hasClickedOutside,
-      wrapperRef.current,
-      event.target
-    )
-
     if (hasClickedOutside) {
       handleBlur()
     }
