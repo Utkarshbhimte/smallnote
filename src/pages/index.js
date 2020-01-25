@@ -7,11 +7,13 @@ import Image from "../components/image"
 import SEO from "../components/seo"
 
 import { NotesWrap } from "../components/NotesWrap"
+import { AddNote } from "../components/AddNote"
 
 const IndexPage = () => (
   <Layout>
     <SEO title="Home" />
     <div className="container">
+      <AddNote />
       <NotesWrap />
     </div>
   </Layout>

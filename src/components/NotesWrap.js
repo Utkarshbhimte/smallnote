@@ -19,7 +19,7 @@ export const NotesWrap = () => {
   return (
     <NoteCardGrid>
       {list.map(noteId => (
-        <NoteCard noteId={noteId} />
+        <NoteCard key={noteId} noteId={noteId} />
       ))}
     </NoteCardGrid>
   )

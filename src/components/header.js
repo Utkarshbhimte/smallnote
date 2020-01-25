@@ -6,6 +6,11 @@ import SearchBar from "./SearchBar"
 
 const StyledHeader = styled.header`
   padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: ${props => props.theme.background};
+  z-index: 9;
 
   a {
     text-decoration: none;
