@@ -1,7 +1,11 @@
 import React from "react"
 import styled from "styled-components"
-
+import { useDispatch, useSelector } from "react-redux"
 import CloseIcon from "../images/close.svg"
+import {
+  updateSearchTerm,
+  resetSearchTerm,
+} from "../state/actions/search.actions"
 
 const SearchBarStyled = styled.label`
   grid-area: search;
@@ -16,12 +20,6 @@ const SearchBarStyled = styled.label`
 
   &:focus-within {
     opacity: 1;
-
-    .close-btn {
-      opacity: 1;
-      transform: translateY(-50%) translateX(-2rem);
-      color: ${props => props.theme.primaryText};
-    }
   }
 
   input {
@@ -36,20 +34,64 @@ const SearchBarStyled = styled.label`
     position: absolute;
     top: 50%;
     opacity: 0;
-    right: -1rem;
+    right: -1.5rem;
     transform: translateY(-50%);
     will-change: transform, opacity;
     transition: all 0.3s ease-out;
-    height: 1rem;
-    width: 1rem;
+    display: flex;
+    align-items: center;
+
+    cursor: pointer;
+    padding: 0.5rem;
+
+    svg {
+      height: 1rem;
+      width: 1rem;
+      pointer-events: none;
+    }
+
+    &.show {
+      opacity: 0.5;
+      transform: translateY(-50%) translateX(-2rem);
+      color: ${props => props.theme.primaryText};
+
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
 `
 
 const SearchBar = () => {
+  const dispatch = useDispatch()
+
+  const { searchTerm } = useSelector(state => ({
+    searchTerm: state.search.searchTerm,
+  }))
+
+  const handleChange = event => {
+    const searchTerm = event.target.value
+    dispatch(updateSearchTerm({ searchTerm }))
+  }
+
+  const resetSearch = () => {
+    dispatch(resetSearchTerm())
+  }
+
   return (
     <SearchBarStyled>
-      <input type="search" placeholder="Search" />
-      <CloseIcon className="close-btn" />
+      <input
+        type="search"
+        placeholder="Search"
+        value={searchTerm}
+        onChange={handleChange}
+      />
+      <div
+        className={`close-btn ${!!searchTerm.length ? "show" : ""}`}
+        onClick={resetSearch}
+      >
+        <CloseIcon />
+      </div>
     </SearchBarStyled>
   )
 }

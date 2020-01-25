@@ -126,6 +126,7 @@ const AddNoteStyled = styled.div`
       margin: 0;
       height: 1rem;
       width: 1rem;
+      pointer-events: none;
     }
 
     &.active {
@@ -171,7 +172,10 @@ export const AddNote = () => {
     }
   }
 
-  const togglePinned = () => setIsPinned(a => !a)
+  const togglePinned = event => {
+    event.stopPropagation()
+    setIsPinned(a => !a)
+  }
 
   const handleBlur = () => {
     const note = inputRef.current.innerHTML
@@ -187,6 +191,12 @@ export const AddNote = () => {
 
   const detectBlur = event => {
     const hasClickedOutside = !wrapperRef.current.contains(event.target)
+    console.log(
+      "TCL: AddNote -> hasClickedOutside",
+      hasClickedOutside,
+      wrapperRef.current,
+      event.target
+    )
 
     if (hasClickedOutside) {
       handleBlur()

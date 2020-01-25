@@ -8,6 +8,6 @@ export const updateSearchTerm = ({ searchTerm }) => ({
   payload: { searchTerm },
 })
 
-export const resetSearchTerm = ({ term }) => ({
+export const resetSearchTerm = () => ({
   type: searchActions.RESET_SEARCH_TERM,
 })
