@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react"
 import styled from "styled-components"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { addNote } from "../state/actions/notes.actions"
 import AddPinIcon from "../images/add-pin.svg"
 import DonePinIcon from "../images/done-pin.svg"
@@ -143,6 +143,10 @@ export const AddNote = () => {
   const inputRef = useRef()
   const titleInputRef = useRef()
 
+  const { defaultPinned } = useSelector(state => ({
+    defaultPinned: state.ui.activeTab === "pinned",
+  }))
+
   const [isFocused, setIsFocused] = useState(false)
 
   const [isPinned, setIsPinned] = useState(false)
@@ -160,7 +164,7 @@ export const AddNote = () => {
     event && event.preventDefault()
     const title = titleInputRef.current.innerHTML
     const value = inputRef.current.innerHTML
-    dispatch(addNote({ noteData: { title, text: value, isPinned } }))
+    dispatch(addNote({ noteData: { title, text: value, pinned: isPinned } }))
 
     shutForm()
   }
@@ -214,6 +218,12 @@ export const AddNote = () => {
       document.removeEventListener("click", detectBlur)
     }
   }, [detectBlur, isFocused])
+
+  useEffect(() => {
+    if (!isFocused) {
+      setIsPinned(defaultPinned)
+    }
+  }, [defaultPinned, isFocused])
 
   return (
     <AddNoteStyled expand={isFocused}>
