@@ -34,7 +34,7 @@ const AddNoteStyled = styled.div`
     outline: none;
     font-size: 0.7rem;
     background: white;
-    line-height: 1.2rems;
+    line-height: 1.2rem;
     position: relative;
 
     &:not(:empty) {
@@ -110,16 +110,8 @@ const AddNoteStyled = styled.div`
     }
   }
 
-  [contenteditable="true"].single-line {
-    white-space: nowrap;
-    overflow: hidden;
-  }
-  [contenteditable="true"].single-line br {
-    display: none;
-  }
-  [contenteditable="true"].single-line * {
-    display: inline;
-    white-space: nowrap;
+  [contenteditable="true"] {
+    min-height: 1.2rem;
   }
 
   .icon-btn {
@@ -166,8 +158,8 @@ export const AddNote = () => {
 
   const handleSubmit = event => {
     event && event.preventDefault()
-    const title = titleInputRef.current.value
-    const value = inputRef.current.value
+    const title = titleInputRef.current.innerHTML
+    const value = inputRef.current.innerHTML
     dispatch(addNote({ noteData: { title, text: value } }))
 
     shutForm()
@@ -183,7 +175,6 @@ export const AddNote = () => {
   const togglePinned = () => setIsPinned(a => !a)
 
   const handleBlur = () => {
-    console.log("TCL: handleBlur -> handleBlur")
     const note = inputRef.current.innerHTML
     const title = titleInputRef.current.innerHTML
     const isValidNote = title || note
@@ -197,10 +188,16 @@ export const AddNote = () => {
 
   const detectBlur = event => {
     const hasClickedOutside = !wrapperRef.current.contains(event.target)
-    console.log({ hasClickedOutside })
 
     if (hasClickedOutside) {
       handleBlur()
+    }
+  }
+
+  const handleTitleChange = event => {
+    if (event.charCode === 13) {
+      event.preventDefault()
+      inputRef.current.focus()
     }
   }
 
@@ -223,7 +220,8 @@ export const AddNote = () => {
           contentEditable
           ref={titleInputRef}
           type="text"
-          className="title-input show-when-focused single-line"
+          onKeyPress={handleTitleChange}
+          className="title-input show-when-focused"
         />
         <div
           contentEditable
