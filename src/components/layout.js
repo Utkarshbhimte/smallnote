@@ -8,6 +8,7 @@ import "./layout.css"
 import { theme } from "./theme"
 import { GlobalStyles } from "./globalStyles"
 import { Page } from "./sharedStyled"
+import Sidebar from "./Sidebar"
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -22,6 +23,7 @@ const Layout = ({ children }) => {
 
   return (
     <ThemeProvider theme={theme}>
+      <Sidebar />
       <Page>
         <Header siteTitle={data.site.siteMetadata.title} />
         <main>{children}</main>

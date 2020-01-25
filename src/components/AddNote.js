@@ -2,9 +2,8 @@ import React, { useRef, useState, useEffect } from "react"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import { addNote } from "../state/actions/notes.actions"
-import addPinIcon from "../images/add-pin.svg"
-import removePinIcon from "../images/remove-pin.svg"
-import donePinIcon from "../images/done-pin.svg"
+import AddPinIcon from "../images/add-pin.svg"
+import DonePinIcon from "../images/done-pin.svg"
 
 const AddNoteStyled = styled.div`
   border-top: 1px solid white;
@@ -76,11 +75,11 @@ const AddNoteStyled = styled.div`
     margin: 0 auto;
     width: 500px;
     display: block;
-    overflow: hidden;
     border-radius: 0.5rem;
     background: white;
     transition: all 0.3s ease-in-out;
     padding: 0.5rem 0;
+    margin-top: 0.2rem;
   }
 
   .button-wrapper {
@@ -123,7 +122,7 @@ const AddNoteStyled = styled.div`
     display: inline-grid;
     place-items: center;
 
-    img {
+    svg {
       margin: 0;
       height: 1rem;
       width: 1rem;
@@ -160,7 +159,7 @@ export const AddNote = () => {
     event && event.preventDefault()
     const title = titleInputRef.current.innerHTML
     const value = inputRef.current.innerHTML
-    dispatch(addNote({ noteData: { title, text: value } }))
+    dispatch(addNote({ noteData: { title, text: value, isPinned } }))
 
     shutForm()
   }
@@ -238,7 +237,7 @@ export const AddNote = () => {
               className={`icon-btn ${isPinned ? "active" : ""}`}
               onClick={togglePinned}
             >
-              <img src={isPinned ? donePinIcon : addPinIcon} alt="" />
+              {isPinned ? <DonePinIcon /> : <AddPinIcon />}
             </div>
             <div role="button" onClick={shutForm}>
               Close

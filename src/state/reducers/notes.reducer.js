@@ -6,11 +6,8 @@ export const notesReducer = (
   action
 ) => {
   const { type, payload } = action
-  console.log("TCL: action", action)
-
   switch (type) {
     case noteActions.ADD_NOTE: {
-      console.log("aaya")
       const newID = generateId()
       return {
         ...state,

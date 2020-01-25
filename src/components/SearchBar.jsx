@@ -1,6 +1,8 @@
 import React from "react"
 import styled from "styled-components"
 
+import CloseIcon from "../images/close.svg"
+
 const SearchBarStyled = styled.label`
   grid-area: search;
   background: white;
@@ -18,6 +20,7 @@ const SearchBarStyled = styled.label`
     .close-btn {
       opacity: 1;
       transform: translateY(-50%) translateX(-2rem);
+      color: ${props => props.theme.primaryText};
     }
   }
 
@@ -37,6 +40,8 @@ const SearchBarStyled = styled.label`
     transform: translateY(-50%);
     will-change: transform, opacity;
     transition: all 0.3s ease-out;
+    height: 1rem;
+    width: 1rem;
   }
 `
 
@@ -44,7 +49,7 @@ const SearchBar = () => {
   return (
     <SearchBarStyled>
       <input type="search" placeholder="Search" />
-      <div className="close-btn">C</div>
+      <CloseIcon className="close-btn" />
     </SearchBarStyled>
   )
 }

@@ -1,8 +1,10 @@
 import { Link } from "gatsby"
+import { useSelector } from "react-redux"
 import styled from "styled-components"
 import PropTypes from "prop-types"
 import React from "react"
 import SearchBar from "./SearchBar"
+import Hamburger from "./Hamburger"
 
 const StyledHeader = styled.header`
   padding: 1rem 0;
@@ -15,32 +17,51 @@ const StyledHeader = styled.header`
   a {
     text-decoration: none;
     color: ${props => props.theme.primaryText};
-    font-size: 1.3rem;
   }
 
   .header-grid {
     display: grid;
-    grid-template-columns: min-content 2rem 500px 1fr min-content;
+    grid-template-columns: 10rem 500px 1fr min-content;
     grid-gap: 1rem;
-    grid-template-areas: "logo gap1 search gap actions";
+    align-items: center;
+    grid-template-areas: "logo  search gap actions";
     padding: 0 2rem;
   }
 
-  .logo {
-    grid-area: logo;
-    margin: 0;
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    .logo {
+      grid-area: logo;
+      margin: 0;
+      line-height: 2rem;
+      font-size: 1rem;
+      text-transform: capitalize;
+    }
   }
   .action-tabs {
     grid-area: actions;
   }
 `
 
+const Logo = () => {
+  const { activeTab } = useSelector(state => ({
+    activeTab: state.ui.activeTab,
+  }))
+  return (
+    <span className="logo">
+      <Link to="/">{activeTab || "SmallNote"}</Link>
+    </span>
+  )
+}
+
 const Header = ({ siteTitle }) => (
   <StyledHeader>
     <div className="header-grid">
-      <h1 className="logo">
-        <Link to="/">SmallNote</Link>
-      </h1>
+      <div className="logo-wrap">
+        <Hamburger />
+        <Logo />
+      </div>
       <SearchBar />
       <div className="action-tabs"></div>
     </div>
