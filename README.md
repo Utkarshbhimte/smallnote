@@ -4,7 +4,7 @@ A simple note keeping web app built using gatsby and redux, styled using styled-
 ## Salient Features
 * Create and maange notes easily
 * Pin or archive them 
-* Light and DarK mode supported (keeps OS theme as default)
+* Light and Dark mode supported (keeps OS theme as default)
 * Has a global level text search to find notes easily
 * Never loose progress, as everything is persistent
 
