@@ -1,10 +1,13 @@
-import React from "react"
+import React, { useRef } from "react"
 import styled from "styled-components"
 import { useSelector, useDispatch } from "react-redux"
-
 import { IconButton } from "../components/IconButton"
 
-import { updateNote, deleteNote } from "../state/actions/notes.actions"
+import {
+  updateNote,
+  deleteNote,
+  setActiveNote,
+} from "../state/actions/notes.actions"
 
 import PinnedIcon from "../images/pinned-icon.svg"
 import UnpinnedIcon from "../images/unpinned-icon.svg"
@@ -34,7 +37,7 @@ const NoteCardStyled = styled.div`
   .action-btn {
     position: absolute;
     bottom: 0.3rem;
-    opacity: 1;
+    opacity: 0;
     will-change: opacity;
     transition: all 0.3s ease-in-out;
   }
@@ -49,31 +52,27 @@ const NoteCardStyled = styled.div`
 
   .delete-btn {
     right: 0.5rem;
-    color: ${props => props.theme.danger};
+    color: ${props => props.theme.danger} !important;
   }
 
-  .title {
+  .title-input {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     font-weight: bold;
   }
-
-  .body {
-    &.no-title {
-      font-size: 1.3rem;
-      line-height: 2rem;
-    }
-  }
 `
 
-export const NoteCard = React.memo(({ noteId }) => {
+export const NoteCard = React.memo(({ noteId, closeModal, editable }) => {
+  const inputRef = useRef()
   const dispatch = useDispatch()
+
   const { noteData } = useSelector(state => ({
     noteData: state.notes.data[noteId],
   }))
 
-  const togglePinned = () => {
+  const togglePinned = event => {
+    event.stopPropagation()
     dispatch(
       updateNote({
         noteData: { ...noteData, pinned: !noteData.pinned, archived: false },
@@ -81,7 +80,8 @@ export const NoteCard = React.memo(({ noteId }) => {
     )
   }
 
-  const toggleArchived = () => {
+  const toggleArchived = event => {
+    event.stopPropagation()
     dispatch(
       updateNote({
         noteData: {
@@ -93,21 +93,49 @@ export const NoteCard = React.memo(({ noteId }) => {
     )
   }
 
-  const handleDeleteIconClick = () => {
+  const handleDeleteIconClick = event => {
+    event.stopPropagation()
     dispatch(deleteNote({ noteId: noteData.id }))
+
+    closeModal && closeModal()
+  }
+
+  const handleCardClick = () => {
+    dispatch(setActiveNote({ noteData }))
+  }
+
+  const handleTitleChange = event => {
+    if (event.charCode === 13) {
+      event.preventDefault()
+      inputRef.current.focus()
+    }
+  }
+
+  const handleNoteChange = event => {
+    const content = event.target.innerHTML
+    if (content === "<br>") {
+      event.target.innerHTML = ""
+    }
   }
 
   return (
-    <NoteCardStyled>
-      {noteData.title && (
+    <NoteCardStyled onClick={handleCardClick}>
+      {(noteData.title || editable) && (
         <div
-          className="title"
+          contentEditable={editable}
+          placeholder="Title"
+          onKeyPress={handleTitleChange}
+          className="title-input"
           dangerouslySetInnerHTML={{ __html: noteData.title }}
         />
       )}
-      {noteData.text && (
+      {(noteData.text || editable) && (
         <div
-          className={`body ${!noteData.title.length && "no-title"}`}
+          contentEditable={editable}
+          placeholder="Add a note"
+          ref={inputRef}
+          onInput={handleNoteChange}
+          className={`body-input ${!noteData.title.length && "no-title"}`}
           dangerouslySetInnerHTML={{ __html: noteData.text }}
         />
       )}
@@ -115,7 +143,7 @@ export const NoteCard = React.memo(({ noteId }) => {
       <IconButton
         role="button"
         active={noteData.pinned}
-        className="pin-btn action-btn"
+        className="action-btn pin-btn"
         onClick={togglePinned}
       >
         {noteData.pinned ? <PinnedIcon /> : <UnpinnedIcon />}
@@ -124,7 +152,7 @@ export const NoteCard = React.memo(({ noteId }) => {
       <IconButton
         role="button"
         active={noteData.archived}
-        className="archive-btn action-btn"
+        className="action-btn archive-btn"
         onClick={toggleArchived}
       >
         <ArchiveIcon />
@@ -132,7 +160,7 @@ export const NoteCard = React.memo(({ noteId }) => {
 
       <IconButton
         role="button"
-        className="delete-btn action-btn"
+        className="action-btn delete-btn"
         onClick={handleDeleteIconClick}
       >
         <DeleteIcon />

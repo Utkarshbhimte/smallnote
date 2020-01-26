@@ -11,7 +11,6 @@ export const notesReducer = (
   action
 ) => {
   const { type, payload } = action
-  console.log("TCL: type", type)
 
   switch (type) {
     case noteActions.ADD_NOTE: {
@@ -26,6 +25,30 @@ export const notesReducer = (
           },
         },
         list: [newID, ...state.list],
+      }
+
+      localStorage.setItem("notesReducer", JSON.stringify(newState))
+      return newState
+    }
+
+    case noteActions.SET_ACTIVE_NOTE: {
+      const newState = {
+        ...state,
+        data: {
+          ...state.data,
+        },
+        activeNote: payload.noteData,
+      }
+
+      localStorage.setItem("notesReducer", JSON.stringify(newState))
+      console.log("TCL: newState", newState)
+      return newState
+    }
+
+    case noteActions.RESET_ACTIVE_NOTE: {
+      const newState = {
+        ...state,
+        activeNote: null,
       }
 
       localStorage.setItem("notesReducer", JSON.stringify(newState))
@@ -54,8 +77,6 @@ export const notesReducer = (
         list: state.list.filter(noteId => noteId !== payload.noteId),
         data: newDate,
       }
-      console.log("TCL: payload.noteId", payload.noteId)
-      console.log(newState)
 
       localStorage.setItem("notesReducer", JSON.stringify(newState))
       return newState

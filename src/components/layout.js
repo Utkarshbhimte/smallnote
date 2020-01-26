@@ -9,6 +9,7 @@ import { theme } from "./theme"
 import { GlobalStyles } from "./globalStyles"
 import { Page } from "./sharedStyled"
 import Sidebar from "./Sidebar"
+import NoteModal from "./NoteModal"
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -29,6 +30,7 @@ const Layout = ({ children }) => {
         <main>{children}</main>
       </Page>
       <GlobalStyles />
+      <NoteModal />
     </ThemeProvider>
   )
 }

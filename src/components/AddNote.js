@@ -19,22 +19,14 @@ const AddNoteStyled = styled.div`
 
   .note-input,
   .title-input {
-    transition: all 0.3s ease-in-out;
-    border: none;
     padding: 0 1rem;
     width: 100%;
     display: block;
-    outline: none;
+    transition: all 0.3s ease-in-out;
     font-size: 0.7rem;
     background: white;
     line-height: 1.2rem;
     position: relative;
-
-    &:not(:empty) {
-      &::after {
-        display: none;
-      }
-    }
   }
 
   .title-input {
@@ -42,25 +34,9 @@ const AddNoteStyled = styled.div`
     &:empty {
       display: none;
     }
-
-    &::after {
-      content: "Title";
-      position: absolute;
-      display: block;
-      top: 0;
-      left: 1rem;
-    }
   }
   .note-input {
     z-index: 4;
-
-    &::after {
-      content: "Add a note";
-      position: absolute;
-      display: block;
-      top: 0;
-      left: 1rem;
-    }
   }
 
   .input-wrapper {
@@ -104,10 +80,6 @@ const AddNoteStyled = styled.div`
         }
       }
     }
-  }
-
-  [contenteditable="true"] {
-    min-height: 1.2rem;
   }
 
   .pin-btn {
@@ -161,6 +133,13 @@ export const AddNote = () => {
     [dispatch, isPinned, shutForm]
   )
 
+  const handleTitleChange = event => {
+    if (event.charCode === 13) {
+      event.preventDefault()
+      inputRef.current.focus()
+    }
+  }
+
   const handleNoteChange = event => {
     const content = event.target.innerHTML
     if (content === "<br>") {
@@ -195,13 +174,6 @@ export const AddNote = () => {
     [handleBlur]
   )
 
-  const handleTitleChange = event => {
-    if (event.charCode === 13) {
-      event.preventDefault()
-      inputRef.current.focus()
-    }
-  }
-
   useEffect(() => {
     if (isFocused) {
       document.addEventListener("click", detectBlur)
@@ -226,6 +198,7 @@ export const AddNote = () => {
         <div
           role="textbox"
           contentEditable
+          placeholder="Title"
           ref={titleInputRef}
           type="text"
           onKeyPress={handleTitleChange}
@@ -234,6 +207,7 @@ export const AddNote = () => {
         <div
           role="textbox"
           contentEditable
+          placeholder="Add a note"
           ref={inputRef}
           onInput={handleNoteChange}
           onFocus={handleFocus}
