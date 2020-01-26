@@ -8,6 +8,10 @@ A simple note keeping web app built using gatsby and redux, styled using styled-
 * Has a global level text search to find notes easily
 * Never loose progress, as everything is persistent
 
+## 💫 Deployed Preview
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/fc122649-7c9c-497d-beb8-b6a401d65e00/deploy-status)](https://app.netlify.com/sites/smallnote/deploys)
+
 
 ## 🚀 Quick start
 
@@ -65,8 +69,4 @@ A quick look at the top-level files and directories you'll see in a Gatsby proje
 
 12. **`README.md`**: A text file containing useful reference information about your project.
 
-## 💫 Deployed Preview
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/fc122649-7c9c-497d-beb8-b6a401d65e00/deploy-status)](https://app.netlify.com/sites/smallnote/deploys)
-
-<!-- AUTO-GENERATED-CONTENT:END -->
