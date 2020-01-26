@@ -7,6 +7,7 @@ const defaultActiveTab =
 const defaultSelectedTheme =
   getWindow() && getWindow().localStorage.getItem("selectedTheme")
 
+// getting the OS defaults
 const getPreferredTheme = () =>
   window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"

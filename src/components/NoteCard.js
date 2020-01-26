@@ -33,6 +33,8 @@ const NoteCardStyled = styled.div`
 
   .note-content {
     height: calc(250px - 4rem);
+
+    /* prevent interfering with the parent scroll */
     overscroll-behavior: contain;
     overflow-y: scroll;
   }
@@ -114,6 +116,7 @@ export const NoteCard = React.memo(({ noteId, closeModal, editable }) => {
     dispatch(setActiveNote({ noteData }))
   }
 
+  // enter on title should move the pointer to the next input
   const handleTitleChange = event => {
     if (event.charCode === 13) {
       event.preventDefault()
@@ -121,6 +124,8 @@ export const NoteCard = React.memo(({ noteId, closeModal, editable }) => {
     }
   }
 
+  // placeholder fix, if you clear everything by selecting
+  // br stays in the input, preventing the empty pseudo class to work properly
   const handleNoteChange = event => {
     const content = event.target.innerHTML
     if (content === "<br>") {

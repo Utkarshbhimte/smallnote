@@ -68,6 +68,7 @@ export const NotesWrap = () => {
 
   return (
     <>
+      {/* filtered view */}
       {activeTab ? (
         <NoteCardGrid>
           {activeList.map(noteId => (
@@ -76,6 +77,7 @@ export const NotesWrap = () => {
         </NoteCardGrid>
       ) : (
         <>
+          {/* default view */}
           {pinnedNotes && !!pinnedNotes.length && (
             <>
               <NoteCardGridHeader>Pinned</NoteCardGridHeader>

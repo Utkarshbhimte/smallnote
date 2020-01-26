@@ -5,7 +5,7 @@ export const GlobalStyles = createGlobalStyle`
 		background-color: ${props => props.theme.background};
 	}
 
-
+	/* contentEditable styles */
 	[contenteditable="true"] {
 		min-height: 1.2rem;
 		position: relative;

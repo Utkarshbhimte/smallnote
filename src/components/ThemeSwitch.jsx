@@ -29,6 +29,7 @@ const ThemeSwitchStyled = styled.label`
     transform: scale(0);
   }
 
+  /* for better accessibility */
   &:hover,
   &:focus-within {
     opacity: 1;

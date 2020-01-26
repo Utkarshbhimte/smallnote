@@ -5,9 +5,7 @@ import { useSelector } from "react-redux"
 import { resetActiveNote, updateNote } from "../state/actions/notes.actions"
 import { NoteCard } from "./NoteCard"
 
-import { useSpring, animated } from "react-spring"
-
-const NoteModalStyled = styled(animated.div)`
+const NoteModalStyled = styled.div`
   height: 100vh;
   width: 100vw;
   display: grid;
