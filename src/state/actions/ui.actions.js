@@ -4,6 +4,8 @@ export const uiActions = {
   CLOSE_SIDEBAR: "CLOSE_SIDEBAR",
   UPDATE_ACTIVE_TAB: "UPDATE_ACTIVE_TAB",
   RESET_ACTIVE_TAB: "RESET_ACTIVE_TAB",
+
+  SET_THEME: "SET_THEME",
 }
 
 export const toggleSidebar = () => ({
@@ -24,4 +26,9 @@ export const updateActiveTab = ({ activeTab }) => ({
 })
 export const resetActiveTab = () => ({
   type: uiActions.RESET_ACTIVE_TAB,
+})
+
+export const setTheme = ({ selectedTheme }) => ({
+  type: uiActions.SET_THEME,
+  payload: { selectedTheme },
 })

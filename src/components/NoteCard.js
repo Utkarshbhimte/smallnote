@@ -16,7 +16,7 @@ import ArchiveIcon from "../images/archive-icon.svg"
 
 const NoteCardStyled = styled.div`
   width: 100%;
-  background: white;
+  background-color: ${props => props.theme.cardBackground};
   border-radius: 0.5rem;
   padding: 1rem 1rem 3rem;
   display: grid;

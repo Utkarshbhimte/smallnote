@@ -4,9 +4,18 @@ import { getWindow } from "../../utils"
 const defaultActiveTab =
   getWindow() && getWindow().localStorage.getItem("activeTab")
 
+const defaultSelectedTheme =
+  getWindow() && getWindow().localStorage.getItem("selectedTheme")
+
+const getPreferredTheme = () =>
+  window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light"
+
 const initialState = {
   sidebar: !!defaultActiveTab,
   activeTab: defaultActiveTab || null,
+  selectedTheme: defaultSelectedTheme || getPreferredTheme(),
 }
 
 export const uiReducer = (state = initialState, action) => {
@@ -34,6 +43,12 @@ export const uiReducer = (state = initialState, action) => {
       getWindow() &&
         getWindow().localStorage.setItem("activeTab", payload.activeTab)
       return { ...state, activeTab: payload.activeTab }
+    }
+
+    case uiActions.SET_THEME: {
+      getWindow() &&
+        getWindow().localStorage.setItem("selectedTheme", payload.selectedTheme)
+      return { ...state, selectedTheme: payload.selectedTheme }
     }
 
     default:

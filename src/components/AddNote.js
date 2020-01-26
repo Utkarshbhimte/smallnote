@@ -24,9 +24,9 @@ const AddNoteStyled = styled.div`
     display: block;
     transition: all 0.3s ease-in-out;
     font-size: 0.7rem;
-    background: white;
     line-height: 1.2rem;
     position: relative;
+    color: ${props => props.theme.primaryText};
   }
 
   .title-input {
@@ -42,11 +42,11 @@ const AddNoteStyled = styled.div`
   .input-wrapper {
     margin: 0;
     position: relative;
+    background-color: ${props => props.theme.cardBackground};
     margin: 0 auto;
     width: 500px;
     display: block;
     border-radius: 0.5rem;
-    background: white;
     transition: all 0.3s ease-in-out;
     padding: 0.5rem 0;
     margin-top: 0.2rem;

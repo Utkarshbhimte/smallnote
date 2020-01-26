@@ -5,6 +5,7 @@ import PropTypes from "prop-types"
 import React from "react"
 import SearchBar from "./SearchBar"
 import Hamburger from "./Hamburger"
+import ThemeSwitch from "./ThemeSwitch"
 
 const StyledHeader = styled.header`
   padding: 1rem 0;
@@ -63,7 +64,9 @@ const Header = ({ siteTitle }) => (
         <Logo />
       </div>
       <SearchBar />
-      <div className="action-tabs"></div>
+      <div className="action-tabs">
+        <ThemeSwitch />
+      </div>
     </div>
   </StyledHeader>
 )

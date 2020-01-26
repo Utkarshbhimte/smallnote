@@ -10,6 +10,7 @@ import { GlobalStyles } from "./globalStyles"
 import { Page } from "./sharedStyled"
 import Sidebar from "./Sidebar"
 import NoteModal from "./NoteModal"
+import MultipleThemeProvider from "./MultipleThemeProvider"
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -23,7 +24,7 @@ const Layout = ({ children }) => {
   `)
 
   return (
-    <ThemeProvider theme={theme}>
+    <MultipleThemeProvider>
       <Sidebar />
       <Page>
         <Header siteTitle={data.site.siteMetadata.title} />
@@ -31,7 +32,7 @@ const Layout = ({ children }) => {
       </Page>
       <GlobalStyles />
       <NoteModal />
-    </ThemeProvider>
+    </MultipleThemeProvider>
   )
 }
 
