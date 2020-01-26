@@ -22,16 +22,26 @@ const NoteModalStyled = styled(animated.div)`
     background: white;
     border-radius: 0.5rem;
     width: 420px;
-    padding: 0.5rem 0;
+    overflow-y: scroll;
 
     > div {
       padding-left: 0;
       padding-right: 0;
-    }
+      padding-bottom: 3rem;
+      max-height: 50vh;
 
-    .action-btn {
-      opacity: 1;
-      color: ${props => props.theme.primaryText};
+      .note-content {
+        height: calc(50vh - 4rem);
+      }
+
+      .action-btn {
+        opacity: 1;
+        color: ${props => props.theme.primaryText};
+      }
+
+      .action-wrapper {
+        border-top: ${props => props.theme.background} 1px solid;
+      }
     }
   }
 `

@@ -3,6 +3,15 @@ import styled from "styled-components"
 import { useSelector } from "react-redux"
 import { NoteCard } from "./NoteCard"
 
+export const NoteCardGridHeader = styled.div`
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+  margin-top: 2rem;
+`
+
 export const NoteCardGrid = styled.div`
   display: grid;
   grid-gap: 1rem;
@@ -10,56 +19,88 @@ export const NoteCardGrid = styled.div`
   grid-gap: 1rem;
   grid-auto-rows: minmax(40px, min-content);
   grid-auto-flow: dense;
-  margin: 2rem 0;
+  margin: 0.5rem 0;
 `
 
 export const NotesWrap = () => {
-  const { activeList } = useSelector(state => {
-    const {
-      ui: { activeTab },
-      search: { searchTerm },
-    } = state
+  const { activeList, activeTab, pinnedNotes, otherNotes } = useSelector(
+    state => {
+      const {
+        ui: { activeTab },
+        search: { searchTerm },
+      } = state
 
-    let { list } = state.notes
+      let { list } = state.notes
 
-    list = list.filter(noteId => {
-      const noteData = state.notes.data[noteId]
+      list = list.filter(noteId => {
+        const noteData = state.notes.data[noteId]
 
-      // filtering by active tab
-      const tabCondition = !activeTab || noteData[activeTab]
+        // filtering by active tab
+        const tabCondition = !activeTab || noteData[activeTab]
 
-      // filtering by active search
-      const searchCondition =
-        !(searchTerm && !!searchTerm.length) ||
-        (noteData.title && noteData.title.includes(searchTerm)) ||
-        (noteData.text && noteData.text.includes(searchTerm))
+        // filtering by active search
+        const searchCondition =
+          !(searchTerm && !!searchTerm.length) ||
+          (noteData.title && noteData.title.includes(searchTerm)) ||
+          (noteData.text && noteData.text.includes(searchTerm))
 
-      return tabCondition && searchCondition
-    })
+        return tabCondition && searchCondition
+      })
 
-    list.sort((prevNoteId, nextNoteId) => {
-      const prevNoteData = state.notes.data[prevNoteId]
-      const nextNoteData = state.notes.data[nextNoteId]
+      // chunking the non archived notes between pinned and others
+      const [pinnedNotes, otherNotes] = list
+        .filter(a => !!state.notes.data[a] && !state.notes.data[a].archived)
+        .reduce(
+          (total, curr) => {
+            const data = state.notes.data[curr]
 
-      if (prevNoteData.pinned && !nextNoteData.pinned) {
-        return -1
-      }
-      if (nextNoteData.pinned && !prevNoteData.pinned) {
-        return 1
-      }
+            total = data.pinned
+              ? [[...total[0], curr], total[1]]
+              : [total[0], [...total[1], curr]]
+            return total
+          },
+          [[], []]
+        )
 
-      return 0
-    })
+      return { activeList: list || [], activeTab, pinnedNotes, otherNotes }
+    }
+  )
 
-    return { activeList: list || [] }
-  })
   return (
     <>
-      <NoteCardGrid>
-        {activeList.map(noteId => (
-          <NoteCard key={noteId} noteId={noteId} />
-        ))}
-      </NoteCardGrid>
+      {activeTab ? (
+        <NoteCardGrid>
+          {activeList.map(noteId => (
+            <NoteCard key={noteId} noteId={noteId} />
+          ))}
+        </NoteCardGrid>
+      ) : (
+        <>
+          {pinnedNotes && !!pinnedNotes.length && (
+            <>
+              <NoteCardGridHeader>Pinned</NoteCardGridHeader>
+              <NoteCardGrid>
+                {pinnedNotes.map(noteId => (
+                  <NoteCard key={noteId} noteId={noteId} />
+                ))}
+              </NoteCardGrid>
+            </>
+          )}
+
+          {otherNotes && !!otherNotes.length && (
+            <>
+              <NoteCardGridHeader>Active</NoteCardGridHeader>
+              <NoteCardGrid>
+                {otherNotes
+                  .filter(a => !a.pinned)
+                  .map(noteId => (
+                    <NoteCard key={noteId} noteId={noteId} />
+                  ))}
+              </NoteCardGrid>
+            </>
+          )}
+        </>
+      )}
     </>
   )
 }

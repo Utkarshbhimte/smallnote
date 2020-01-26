@@ -25,8 +25,17 @@ const NoteCardStyled = styled.div`
   font-size: 0.8rem;
   line-height: 1.2rem;
   max-height: 250px;
-  overflow-y: hidden;
-  position: relative;
+
+  .action-wrapper {
+    position: relative;
+    height: 2.5rem;
+  }
+
+  .note-content {
+    height: calc(250px - 4rem);
+    overscroll-behavior: contain;
+    overflow-y: scroll;
+  }
 
   &:hover {
     .action-btn {
@@ -36,7 +45,8 @@ const NoteCardStyled = styled.div`
 
   .action-btn {
     position: absolute;
-    bottom: 0.3rem;
+    top: 50%;
+    transform: translateY(-50%);
     opacity: 0;
     will-change: opacity;
     transition: all 0.3s ease-in-out;
@@ -120,51 +130,55 @@ export const NoteCard = React.memo(({ noteId, closeModal, editable }) => {
 
   return (
     <NoteCardStyled onClick={handleCardClick}>
-      {(noteData.title || editable) && (
-        <div
-          contentEditable={editable}
-          placeholder="Title"
-          onKeyPress={handleTitleChange}
-          className="title-input"
-          dangerouslySetInnerHTML={{ __html: noteData.title }}
-        />
-      )}
-      {(noteData.text || editable) && (
-        <div
-          contentEditable={editable}
-          placeholder="Add a note"
-          ref={inputRef}
-          onInput={handleNoteChange}
-          className={`body-input ${!noteData.title.length && "no-title"}`}
-          dangerouslySetInnerHTML={{ __html: noteData.text }}
-        />
-      )}
+      <div className="note-content">
+        {(noteData.title || editable) && (
+          <div
+            contentEditable={editable}
+            placeholder="Title"
+            onKeyPress={handleTitleChange}
+            className="title-input"
+            dangerouslySetInnerHTML={{ __html: noteData.title }}
+          />
+        )}
+        {(noteData.text || editable) && (
+          <div
+            contentEditable={editable}
+            placeholder="Add a note"
+            ref={inputRef}
+            onInput={handleNoteChange}
+            className={`body-input ${!noteData.title.length && "no-title"}`}
+            dangerouslySetInnerHTML={{ __html: noteData.text }}
+          />
+        )}
+      </div>
 
-      <IconButton
-        role="button"
-        active={noteData.pinned}
-        className="action-btn pin-btn"
-        onClick={togglePinned}
-      >
-        {noteData.pinned ? <PinnedIcon /> : <UnpinnedIcon />}
-      </IconButton>
+      <div className="action-wrapper">
+        <IconButton
+          role="button"
+          active={noteData.pinned}
+          className="action-btn pin-btn"
+          onClick={togglePinned}
+        >
+          {noteData.pinned ? <PinnedIcon /> : <UnpinnedIcon />}
+        </IconButton>
 
-      <IconButton
-        role="button"
-        active={noteData.archived}
-        className="action-btn archive-btn"
-        onClick={toggleArchived}
-      >
-        <ArchiveIcon />
-      </IconButton>
+        <IconButton
+          role="button"
+          active={noteData.archived}
+          className="action-btn archive-btn"
+          onClick={toggleArchived}
+        >
+          <ArchiveIcon />
+        </IconButton>
 
-      <IconButton
-        role="button"
-        className="action-btn delete-btn"
-        onClick={handleDeleteIconClick}
-      >
-        <DeleteIcon />
-      </IconButton>
+        <IconButton
+          role="button"
+          className="action-btn delete-btn"
+          onClick={handleDeleteIconClick}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </div>
     </NoteCardStyled>
   )
 })
