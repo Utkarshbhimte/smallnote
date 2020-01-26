@@ -6,6 +6,7 @@ export const notesReducer = (
   action
 ) => {
   const { type, payload } = action
+  console.log(action)
   switch (type) {
     case noteActions.ADD_NOTE: {
       const newID = generateId()
@@ -13,9 +14,22 @@ export const notesReducer = (
         ...state,
         data: {
           ...state.data,
-          [newID]: payload.noteData,
+          [newID]: {
+            id: newID,
+            ...payload.noteData,
+          },
         },
         list: [newID, ...state.list],
+      }
+    }
+
+    case noteActions.UPDATE_NOTE: {
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [payload.noteData.id]: payload.noteData,
+        },
       }
     }
 

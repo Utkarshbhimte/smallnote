@@ -1,9 +1,11 @@
 import React, { useRef, useState, useEffect } from "react"
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux"
+
+import { IconButton } from "../components/IconButton"
 import { addNote } from "../state/actions/notes.actions"
-import AddPinIcon from "../images/add-pin.svg"
-import DonePinIcon from "../images/done-pin.svg"
+import PinnedIcon from "../images/pinned-icon.svg"
+import UnpinnedIcon from "../images/unpinned-icon.svg"
 
 const AddNoteStyled = styled.div`
   border-top: 1px solid white;
@@ -108,33 +110,8 @@ const AddNoteStyled = styled.div`
     min-height: 1.2rem;
   }
 
-  .icon-btn {
-    height: 1.5rem;
-    width: 1.5rem;
-    text-align: center;
-    padding: 0 !important;
-    color: ${props => props.theme.background};
-    /* display: inline-grid;
-    place-items: center; */
-
-    svg {
-      margin: 0;
-      height: 1rem;
-      width: 1rem;
-      pointer-events: none;
-    }
-
-    &.active {
-      background-color: ${props => props.theme.background};
-      color: white;
-    }
-  }
-
   .pin-btn {
     grid-area: pinBtn;
-    will-change: transform, opacity;
-    display: inline-grid;
-    place-items: center;
   }
   .reset-btn {
     grid-area: resetBtn;
@@ -258,13 +235,14 @@ export const AddNote = () => {
 
         {isFocused && (
           <div className="button-wrapper">
-            <div
+            <IconButton
               role="button"
-              className={`pin-btn icon-btn ${isPinned ? "active" : ""}`}
+              active={isPinned}
+              className="pin-btn"
               onClick={togglePinned}
             >
-              {isPinned ? <DonePinIcon /> : <AddPinIcon />}
-            </div>
+              {isPinned ? <PinnedIcon /> : <UnpinnedIcon />}
+            </IconButton>
             <div role="button" className="reset-btn" onClick={resetForm}>
               Reset
             </div>
