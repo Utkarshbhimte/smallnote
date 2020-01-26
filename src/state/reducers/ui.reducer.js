@@ -1,19 +1,11 @@
 import { uiActions } from "../actions/ui.actions"
-import { getWindow } from "../../utils"
+import { getWindow, getPreferredTheme } from "../../utils"
 
 const defaultActiveTab =
   getWindow() && getWindow().localStorage.getItem("activeTab")
 
 const defaultSelectedTheme =
   getWindow() && getWindow().localStorage.getItem("selectedTheme")
-
-// getting the OS defaults
-const getPreferredTheme = () =>
-  getWindow() &&
-  getWindow().matchMedia &&
-  getWindow().matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light"
 
 const initialState = {
   sidebar: !!defaultActiveTab,

@@ -11,3 +11,11 @@ export const generateId = () => {
 }
 
 export const getWindow = () => (typeof window !== "undefined" && window) || null
+
+// getting the OS defaults
+export const getPreferredTheme = () =>
+  getWindow() &&
+  getWindow().matchMedia &&
+  getWindow().matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light"
