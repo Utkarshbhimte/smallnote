@@ -12,10 +12,14 @@ export const generateId = () => {
 
 export const getWindow = () => (typeof window !== "undefined" && window) || null
 
+// commenting the code below as the getting the
+// default theme from os and SSR caching are the
+// not working properly.
+
 // getting the OS defaults
-export const getPreferredTheme = () =>
-  getWindow() &&
-  getWindow().matchMedia &&
-  getWindow().matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light"
+// export const getPreferredTheme = () =>
+//   getWindow() &&
+//   getWindow().matchMedia &&
+//   getWindow().matchMedia("(prefers-color-scheme: dark)").matches
+//     ? "dark"
+//     : "light"

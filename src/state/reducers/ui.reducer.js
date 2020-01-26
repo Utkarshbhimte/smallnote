@@ -1,5 +1,5 @@
 import { uiActions } from "../actions/ui.actions"
-import { getWindow, getPreferredTheme } from "../../utils"
+import { getWindow } from "../../utils"
 
 const defaultActiveTab =
   getWindow() && getWindow().localStorage.getItem("activeTab")
@@ -10,7 +10,7 @@ const defaultSelectedTheme =
 const initialState = {
   sidebar: !!defaultActiveTab,
   activeTab: defaultActiveTab || null,
-  selectedTheme: defaultSelectedTheme || getPreferredTheme(),
+  selectedTheme: defaultSelectedTheme || "dark",
 }
 
 export const uiReducer = (state = initialState, action) => {
