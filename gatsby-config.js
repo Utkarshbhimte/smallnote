@@ -1,8 +1,8 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: `SmallNote`,
+    description: `Manage notes easily`,
+    author: `@utkarshbhimte`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -25,14 +25,14 @@ module.exports = {
     `gatsby-plugin-sharp`,
     `gatsby-plugin-styled-components`,
     {
-      resolve: `gatsby-plugin-manifest`,
+      resolve: `smallnote`,
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `starter`,
+        name: `SmallNote`,
+        short_name: `SmallNote`,
         start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#663399`,
-        display: `minimal-ui`,
+        background_color: `#E8DDE6`,
+        theme_color: `#E8DDE6`,
+        display: `standalone`,
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
