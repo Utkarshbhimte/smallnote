@@ -1,10 +1,16 @@
 import { uiActions } from "../actions/ui.actions"
+import { getWindow } from "../../utils"
 
-const initialState = { sidebar: false, activeTab: null }
+const defaultActiveTab =
+  getWindow() && getWindow().localStorage.getItem("activeTab")
+
+const initialState = {
+  sidebar: !!defaultActiveTab,
+  activeTab: defaultActiveTab || null,
+}
 
 export const uiReducer = (state = initialState, action) => {
   const { type, payload } = action
-  console.log("TCL: uiReducer -> type", type)
 
   switch (type) {
     case uiActions.OPEN_SIDEBAR: {
@@ -20,10 +26,13 @@ export const uiReducer = (state = initialState, action) => {
     }
 
     case uiActions.RESET_ACTIVE_TAB: {
+      getWindow() && getWindow().localStorage.removeItem("activeTab")
       return { ...state, activeTab: null }
     }
 
     case uiActions.UPDATE_ACTIVE_TAB: {
+      getWindow() &&
+        getWindow().localStorage.setItem("activeTab", payload.activeTab)
       return { ...state, activeTab: payload.activeTab }
     }
 

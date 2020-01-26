@@ -9,3 +9,5 @@ export const generateId = () => {
       .substr(2, 9)
   )
 }
+
+export const getWindow = () => (typeof window !== "undefined" && window) || null

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 import { IconButton } from "../components/IconButton"
 
-import { updateNote } from "../state/actions/notes.actions"
+import { updateNote, deleteNote } from "../state/actions/notes.actions"
 
 import PinnedIcon from "../images/pinned-icon.svg"
 import UnpinnedIcon from "../images/unpinned-icon.svg"
@@ -93,6 +93,10 @@ export const NoteCard = React.memo(({ noteId }) => {
     )
   }
 
+  const handleDeleteIconClick = () => {
+    dispatch(deleteNote({ noteId: noteData.id }))
+  }
+
   return (
     <NoteCardStyled>
       {noteData.title && (
@@ -129,7 +133,7 @@ export const NoteCard = React.memo(({ noteId }) => {
       <IconButton
         role="button"
         className="delete-btn action-btn"
-        onClick={togglePinned}
+        onClick={handleDeleteIconClick}
       >
         <DeleteIcon />
       </IconButton>

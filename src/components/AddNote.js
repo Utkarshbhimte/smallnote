@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react"
+import React, { useRef, useState, useCallback, useEffect } from "react"
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux"
 
@@ -138,19 +138,28 @@ export const AddNote = () => {
 
   const handleFocus = () => setIsFocused(true)
 
-  const shutForm = () => {
+  const resetForm = useCallback(() => {
+    inputRef.current.innerHTML = ""
+    titleInputRef.current.innerHTML = ""
+    setIsPinned(defaultPinned)
+  }, [setIsPinned, defaultPinned])
+
+  const shutForm = useCallback(() => {
     resetForm()
     setIsFocused(false)
-  }
+  }, [setIsFocused, resetForm])
 
-  const handleSubmit = event => {
-    event && event.preventDefault()
-    const title = titleInputRef.current.innerHTML
-    const value = inputRef.current.innerHTML
-    dispatch(addNote({ noteData: { title, text: value, pinned: isPinned } }))
+  const handleSubmit = useCallback(
+    event => {
+      event && event.preventDefault()
+      const title = titleInputRef.current.innerHTML
+      const value = inputRef.current.innerHTML
+      dispatch(addNote({ noteData: { title, text: value, pinned: isPinned } }))
 
-    shutForm()
-  }
+      shutForm()
+    },
+    [dispatch, isPinned, shutForm]
+  )
 
   const handleNoteChange = event => {
     const content = event.target.innerHTML
@@ -164,7 +173,7 @@ export const AddNote = () => {
     setIsPinned(a => !a)
   }
 
-  const handleBlur = () => {
+  const handleBlur = useCallback(() => {
     const note = inputRef.current.innerHTML
     const title = titleInputRef.current.innerHTML
     const isValidNote = title || note
@@ -174,26 +183,23 @@ export const AddNote = () => {
     } else {
       shutForm()
     }
-  }
+  }, [shutForm, handleSubmit])
 
-  const detectBlur = event => {
-    const hasClickedOutside = !wrapperRef.current.contains(event.target)
-    if (hasClickedOutside) {
-      handleBlur()
-    }
-  }
+  const detectBlur = useCallback(
+    event => {
+      const hasClickedOutside = !wrapperRef.current.contains(event.target)
+      if (hasClickedOutside) {
+        handleBlur()
+      }
+    },
+    [handleBlur]
+  )
 
   const handleTitleChange = event => {
     if (event.charCode === 13) {
       event.preventDefault()
       inputRef.current.focus()
     }
-  }
-
-  const resetForm = () => {
-    inputRef.current.innerHTML = ""
-    titleInputRef.current.innerHTML = ""
-    setIsPinned(defaultPinned)
   }
 
   useEffect(() => {
@@ -218,6 +224,7 @@ export const AddNote = () => {
     <AddNoteStyled expand={isFocused}>
       <form onSubmit={handleSubmit} className="input-wrapper" ref={wrapperRef}>
         <div
+          role="textbox"
           contentEditable
           ref={titleInputRef}
           type="text"
@@ -225,6 +232,7 @@ export const AddNote = () => {
           className="title-input show-when-focused"
         />
         <div
+          role="textbox"
           contentEditable
           ref={inputRef}
           onInput={handleNoteChange}
