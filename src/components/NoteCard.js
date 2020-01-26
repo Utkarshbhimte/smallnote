@@ -2,6 +2,8 @@ import React from "react"
 import styled from "styled-components"
 import { useSelector } from "react-redux"
 
+import PinIcon from "../images/done-pin.svg"
+
 const NoteCardStyled = styled.div`
   width: 100%;
   background: white;
@@ -14,6 +16,14 @@ const NoteCardStyled = styled.div`
   line-height: 1.2rem;
   max-height: 250px;
   overflow-y: hidden;
+  position: relative;
+
+  .pin-icon {
+    pointer-events: none;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
 
   .title {
     white-space: nowrap;
@@ -37,6 +47,7 @@ export const NoteCard = React.memo(({ noteId }) => {
 
   return (
     <NoteCardStyled>
+      {noteData.pinned && <PinIcon className="pin-icon" />}
       {noteData.title && (
         <div
           className="title"

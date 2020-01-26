@@ -14,7 +14,7 @@ export const NoteCardGrid = styled.div`
 `
 
 export const NotesWrap = () => {
-  const { list } = useSelector(state => {
+  const { activeList } = useSelector(state => {
     const {
       ui: { activeTab },
       search: { searchTerm },
@@ -24,6 +24,7 @@ export const NotesWrap = () => {
 
     list = list.filter(noteId => {
       const noteData = state.notes.data[noteId]
+
       // filtering by active tab
       const tabCondition = !activeTab || noteData[activeTab]
 
@@ -36,13 +37,29 @@ export const NotesWrap = () => {
       return tabCondition && searchCondition
     })
 
-    return { list: list || [] }
+    list.sort((prevNoteId, nextNoteId) => {
+      const prevNoteData = state.notes.data[prevNoteId]
+      const nextNoteData = state.notes.data[nextNoteId]
+
+      if (prevNoteData.pinned && !nextNoteData.pinned) {
+        return -1
+      }
+      if (nextNoteData.pinned && !prevNoteData.pinned) {
+        return 1
+      }
+
+      return 0
+    })
+
+    return { activeList: list || [] }
   })
   return (
-    <NoteCardGrid>
-      {list.map(noteId => (
-        <NoteCard key={noteId} noteId={noteId} />
-      ))}
-    </NoteCardGrid>
+    <>
+      <NoteCardGrid>
+        {activeList.map(noteId => (
+          <NoteCard key={noteId} noteId={noteId} />
+        ))}
+      </NoteCardGrid>
+    </>
   )
 }

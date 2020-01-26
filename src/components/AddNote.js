@@ -9,14 +9,6 @@ const AddNoteStyled = styled.div`
   border-top: 1px solid white;
   padding-top: 1rem;
 
-  .pin-btn {
-    will-change: transform, opacity;
-    opacity: 0;
-    transform: scale(1);
-    transition: all 0.3s ease-in-out;
-    z-index: 5;
-  }
-
   .show-when-focused {
     display: ${props => (props.expand ? "block !important" : "")};
     opacity: ${props => (props.expand ? "1" : "")};
@@ -88,7 +80,10 @@ const AddNoteStyled = styled.div`
     overflow: hidden;
     transition: all 0.3s ease-in-out;
     margin-top: 1rem;
-    display: flex;
+    display: grid;
+    grid-gap: 0.5rem;
+    grid-template-columns: min-content 1fr min-content min-content;
+    grid-template-areas: "pinBtn gap resetBtn closeBtn";
     font-size: 0.8rem;
     line-height: 1.5rem;
     justify-content: space-between;
@@ -119,8 +114,8 @@ const AddNoteStyled = styled.div`
     text-align: center;
     padding: 0 !important;
     color: ${props => props.theme.background};
-    display: inline-grid;
-    place-items: center;
+    /* display: inline-grid;
+    place-items: center; */
 
     svg {
       margin: 0;
@@ -133,6 +128,19 @@ const AddNoteStyled = styled.div`
       background-color: ${props => props.theme.background};
       color: white;
     }
+  }
+
+  .pin-btn {
+    grid-area: pinBtn;
+    will-change: transform, opacity;
+    display: inline-grid;
+    place-items: center;
+  }
+  .reset-btn {
+    grid-area: resetBtn;
+  }
+  .close-btn {
+    grid-area: closeBtn;
   }
 `
 
@@ -154,10 +162,8 @@ export const AddNote = () => {
   const handleFocus = () => setIsFocused(true)
 
   const shutForm = () => {
-    inputRef.current.innerHTML = ""
-    titleInputRef.current.innerHTML = ""
+    resetForm()
     setIsFocused(false)
-    setIsPinned(false)
   }
 
   const handleSubmit = event => {
@@ -207,6 +213,12 @@ export const AddNote = () => {
     }
   }
 
+  const resetForm = () => {
+    inputRef.current.innerHTML = ""
+    titleInputRef.current.innerHTML = ""
+    setIsPinned(defaultPinned)
+  }
+
   useEffect(() => {
     if (isFocused) {
       document.addEventListener("click", detectBlur)
@@ -243,16 +255,20 @@ export const AddNote = () => {
           type="text"
           className="note-input"
         />
+
         {isFocused && (
           <div className="button-wrapper">
             <div
               role="button"
-              className={`icon-btn ${isPinned ? "active" : ""}`}
+              className={`pin-btn icon-btn ${isPinned ? "active" : ""}`}
               onClick={togglePinned}
             >
               {isPinned ? <DonePinIcon /> : <AddPinIcon />}
             </div>
-            <div role="button" onClick={shutForm}>
+            <div role="button" className="reset-btn" onClick={resetForm}>
+              Reset
+            </div>
+            <div role="button" className="close-btn" onClick={handleBlur}>
               Close
             </div>
           </div>
