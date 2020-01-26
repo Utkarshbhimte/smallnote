@@ -25,7 +25,7 @@ module.exports = {
     `gatsby-plugin-sharp`,
     `gatsby-plugin-styled-components`,
     {
-      resolve: `smallnote`,
+      resolve: `gatsby-plugin-manifest`,
       options: {
         name: `SmallNote`,
         short_name: `SmallNote`,

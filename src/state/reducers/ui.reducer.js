@@ -9,7 +9,9 @@ const defaultSelectedTheme =
 
 // getting the OS defaults
 const getPreferredTheme = () =>
-  window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+  getWindow() &&
+  getWindow().matchMedia &&
+  getWindow().matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light"
 
