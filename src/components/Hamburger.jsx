@@ -13,12 +13,11 @@ const HamburgerStyled = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin-right: 0.6rem;
 
   &:focus,
   &:hover {
     cursor: pointer;
-    background: #ffffffba;
+    background-color: ${props => props.theme.cardBackground};
   }
 
   .line {

@@ -1,7 +1,12 @@
 import React from "react"
 import { useSelector, useDispatch } from "react-redux"
 import styled from "styled-components"
-import { updateActiveTab, resetActiveTab } from "../state/actions/ui.actions"
+import {
+  updateActiveTab,
+  resetActiveTab,
+  closeSidebar,
+} from "../state/actions/ui.actions"
+import { getWindow } from "../utils"
 
 import CloseIcon from "../images/close.svg"
 
@@ -11,10 +16,14 @@ const SidebarStyled = styled.div`
   left: 0;
   transition: all 0.3s ease-in-out;
   transform: ${props => (props.active ? "translateX(0)" : "translateX(-100%)")};
-  width: 200px;
+  width: 9rem;
   height: 100vh;
   z-index: 10;
-  padding: 0 1rem 0 0;
+
+  @media (max-width: 600px) {
+    width: 100vw;
+    background: ${props => props.theme.background};
+  }
 
   ul {
     margin: 0;
@@ -26,22 +35,40 @@ const SidebarStyled = styled.div`
       color: ${props => props.theme.secondaryText};
     }
 
+    @media (max-width: 600px) {
+      padding-right: 1rem;
+    }
+
     li {
       user-select: none;
-      padding: 0.3rem 2rem;
+      padding: 0.3rem 1.5rem;
       border-radius: 0 0.5rem 0.5rem 0;
       cursor: pointer;
       transition: all 0.3s ease-in-out;
       text-transform: capitalize;
       position: relative;
 
+      @media (max-width: 600px) {
+        padding: 1rem 1.5rem;
+        max-width: 300px;
+      }
+
       .close-btn {
         position: absolute;
         top: 50%;
-        right: 1rem;
+        right: 0.25rem;
         transform: translateY(-50%);
-        height: 0.8rem;
-        width: 0.8rem;
+
+        outline: none;
+        border: none;
+        background: transparent;
+        display: flex;
+
+        svg {
+          height: 0.8rem;
+          color: ${props => props.theme.background};
+          width: 0.8rem;
+        }
       }
 
       &.active {
@@ -70,11 +97,21 @@ const Sidebar = () => {
   const handleTabClick = event => {
     const selectedTab = event.currentTarget.getAttribute("data-value")
     dispatch(updateActiveTab({ activeTab: selectedTab }))
+
+    if (getWindow() && getWindow().innerWidth <= 600) {
+      setTimeout(() => {
+        dispatch(closeSidebar())
+      }, 500)
+    }
   }
 
   const resetTabClick = event => {
     event.stopPropagation()
     dispatch(resetActiveTab())
+
+    if (getWindow() && getWindow().innerWidth <= 600) {
+      dispatch(closeSidebar())
+    }
   }
 
   return (
@@ -90,7 +127,9 @@ const Sidebar = () => {
             {tab}
 
             {activeTab === tab && (
-              <CloseIcon className="close-btn" onClick={resetTabClick} />
+              <button className="close-btn">
+                <CloseIcon onClick={resetTabClick} />
+              </button>
             )}
           </li>
         ))}

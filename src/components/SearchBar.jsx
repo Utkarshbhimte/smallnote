@@ -17,6 +17,8 @@ const SearchBarStyled = styled.label`
   opacity: 0.6;
   will-change: opacity;
   transition: all 0.3s ease-out;
+  display: block;
+  width: 100%;
 
   &:focus-within {
     opacity: 1;

@@ -21,27 +21,58 @@ const StyledHeader = styled.header`
   }
 
   .header-grid {
+    /* align-items: center; */
+    justify-content: space-between;
     display: grid;
-    grid-template-columns: 10rem 500px 1fr min-content;
+    grid-template-columns: 9rem 1fr min-content;
     grid-gap: 1rem;
-    align-items: center;
-    grid-template-areas: "logo  search gap actions";
-    padding: 0 2rem;
+    grid-template-areas: "leftSide main rightSide";
+
+    @media (max-width: 600px) {
+      grid-gap: 1rem;
+      grid-template-columns: 3rem 1fr min-content;
+    }
   }
 
   .logo-wrap {
     display: flex;
     align-items: center;
+    grid-area: leftSide;
+    padding-left: 1rem;
+
+    @media (max-width: 600px) {
+      .logo {
+        display: none;
+      }
+    }
+
     .logo {
-      grid-area: logo;
       margin: 0;
       line-height: 2rem;
+      margin-left: 0.6rem;
       font-size: 1rem;
       text-transform: capitalize;
     }
   }
+  .center-wrapper {
+    grid-area: main;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .search-wrapper {
+    grid-area: main;
+    display: flex;
+    align-items: center;
+  }
+
   .action-tabs {
-    grid-area: actions;
+    grid-area: rightSide;
+    padding-right: 2rem;
+
+    @media (max-width: 600px) {
+      padding-right: 1rem;
+    }
   }
 `
 
@@ -63,7 +94,9 @@ const Header = ({ siteTitle }) => (
         <Hamburger />
         <Logo />
       </div>
-      <SearchBar />
+      <div className="search-wrapper">
+        <SearchBar />
+      </div>
       <div className="action-tabs">
         <ThemeSwitch />
       </div>
