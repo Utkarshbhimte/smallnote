@@ -4,14 +4,19 @@ import styled from "styled-components"
 import { setTheme } from "../state/actions/ui.actions"
 
 const ThemeSwitchStyled = styled.label`
-  height: 1.2rem;
-  width: 2rem;
-  position: relative;
-  background: ${props => props.theme.secondaryText};
-  border-radius: 1rem;
-  display: block;
-  opacity: 0.6;
-  transition: all 0.3s ease-in-out;
+  padding: 0 1rem;
+  cursor: pointer;
+
+  .switch-track {
+    height: 1.2rem;
+    width: 2rem;
+    background: ${props => props.theme.secondaryText};
+    border-radius: 1rem;
+    display: block;
+    opacity: 0.6;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+  }
 
   .thumb {
     position: absolute;
@@ -53,8 +58,10 @@ const ThemeSwitch = () => {
 
   return (
     <ThemeSwitchStyled checked={isDarkMode}>
-      <div className="thumb"></div>
-      <input type="checkbox" checked={isDarkMode} onChange={toggleTheme} />
+      <div className="switch-track">
+        <div className="thumb"></div>
+        <input type="checkbox" checked={isDarkMode} onChange={toggleTheme} />
+      </div>
     </ThemeSwitchStyled>
   )
 }
