@@ -15,6 +15,7 @@ const NoteModalStyled = styled.div`
   left: 0;
   background-color: #000000bb;
   z-index: 10;
+  overflow-y: scroll;
 
   .card {
     background: white;
@@ -22,16 +23,13 @@ const NoteModalStyled = styled.div`
     width: 95%;
     margin: 0 auto;
     max-width: 420px;
-    overflow-y: scroll;
 
     > div {
       padding-left: 0;
       padding-right: 0;
-      padding-bottom: 3rem;
-      max-height: 50vh;
 
       .note-content {
-        height: calc(50vh - 4rem);
+        min-height: calc(50vh - 4rem);
       }
 
       .action-btn {
@@ -40,7 +38,8 @@ const NoteModalStyled = styled.div`
       }
 
       .action-wrapper {
-        border-top: ${props => props.theme.background} 1px solid;
+        position: relative;
+        margin: 0 1rem;
       }
     }
   }

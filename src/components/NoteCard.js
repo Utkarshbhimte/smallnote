@@ -18,25 +18,16 @@ const NoteCardStyled = styled.div`
   width: 100%;
   background-color: ${props => props.theme.cardBackground};
   border-radius: 0.5rem;
-  padding: 1rem 1rem 3rem;
+  padding: 1rem;
   display: grid;
-  grid-template-rows: min-content min-content;
+  grid-template-rows: 1fr min-content;
   grid-gap: 0.5rem;
   font-size: 0.8rem;
   line-height: 1.2rem;
-  max-height: 250px;
 
   .action-wrapper {
     position: relative;
-    height: 2.5rem;
-  }
-
-  .note-content {
-    height: calc(250px - 4rem);
-
-    /* prevent interfering with the parent scroll */
-    overscroll-behavior: contain;
-    overflow-y: scroll;
+    height: 27px;
   }
 
   &:hover {
@@ -55,15 +46,15 @@ const NoteCardStyled = styled.div`
   }
 
   .pin-btn {
-    left: 0.5rem;
+    left: 0rem;
   }
 
   .archive-btn {
-    left: 2.5rem;
+    left: 2rem;
   }
 
   .delete-btn {
-    right: 0.5rem;
+    right: 0rem;
     color: ${props => props.theme.danger} !important;
   }
 

@@ -13,13 +13,18 @@ export const NoteCardGridHeader = styled.div`
 `
 
 export const NoteCardGrid = styled.div`
-  display: grid;
-  grid-gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  grid-gap: 1rem;
-  grid-auto-rows: minmax(40px, min-content);
-  grid-auto-flow: dense;
+  /* display: grid;
+  grid-gap: 1rem; */
+  /* grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 1rem; */
+  /* grid-auto-flow: dense; */
+
   margin: 0.5rem 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  grid-auto-rows: min-content;
+  grid-gap: 1rem;
+  grid-auto-flow: dense;
 `
 
 export const NotesWrap = () => {
