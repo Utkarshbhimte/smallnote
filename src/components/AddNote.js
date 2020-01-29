@@ -44,7 +44,8 @@ const AddNoteStyled = styled.div`
     position: relative;
     background-color: ${props => props.theme.cardBackground};
     margin: 0 auto;
-    width: 500px;
+    width: 100%;
+    max-width: 500px;
     display: block;
     border-radius: 0.5rem;
     transition: all 0.3s ease-in-out;

@@ -19,7 +19,9 @@ const NoteModalStyled = styled.div`
   .card {
     background: white;
     border-radius: 0.5rem;
-    width: 420px;
+    width: 95%;
+    margin: 0 auto;
+    max-width: 420px;
     overflow-y: scroll;
 
     > div {
