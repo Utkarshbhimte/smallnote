@@ -8,7 +8,7 @@ import PinnedIcon from "../images/pinned-icon.svg"
 import UnpinnedIcon from "../images/unpinned-icon.svg"
 
 const AddNoteStyled = styled.div`
-  border-top: 1px solid white;
+  border-top: 1px solid ${props => props.theme.textPrimary};
   padding-top: 1rem;
 
   .show-when-focused {
@@ -100,8 +100,9 @@ export const AddNote = () => {
   const inputRef = useRef()
   const titleInputRef = useRef()
 
-  const { defaultPinned } = useSelector(state => ({
+  const { defaultPinned, isInArchived } = useSelector(state => ({
     defaultPinned: state.ui.activeTab === "pinned",
+    isInArchived: state.ui.activeTab === "archived",
   }))
 
   const [isFocused, setIsFocused] = useState(false)
@@ -194,46 +195,52 @@ export const AddNote = () => {
 
   return (
     <AddNoteStyled expand={isFocused}>
-      <form onSubmit={handleSubmit} className="input-wrapper" ref={wrapperRef}>
-        <div
-          role="textbox"
-          contentEditable
-          placeholder="Title"
-          ref={titleInputRef}
-          type="text"
-          onKeyPress={handleTitleChange}
-          className="title-input show-when-focused"
-        />
-        <div
-          role="textbox"
-          contentEditable
-          placeholder="Add a note"
-          ref={inputRef}
-          onInput={handleNoteChange}
-          onFocus={handleFocus}
-          type="text"
-          className="note-input"
-        />
+      {!isInArchived && (
+        <form
+          onSubmit={handleSubmit}
+          className="input-wrapper"
+          ref={wrapperRef}
+        >
+          <div
+            role="textbox"
+            contentEditable
+            placeholder="Title"
+            ref={titleInputRef}
+            type="text"
+            onKeyPress={handleTitleChange}
+            className="title-input show-when-focused"
+          />
+          <div
+            role="textbox"
+            contentEditable
+            placeholder="Add a note"
+            ref={inputRef}
+            onInput={handleNoteChange}
+            onFocus={handleFocus}
+            type="text"
+            className="note-input"
+          />
 
-        {isFocused && (
-          <div className="button-wrapper">
-            <IconButton
-              role="button"
-              active={isPinned}
-              className="pin-btn"
-              onClick={togglePinned}
-            >
-              {isPinned ? <PinnedIcon /> : <UnpinnedIcon />}
-            </IconButton>
-            <div role="button" className="reset-btn" onClick={resetForm}>
-              Reset
+          {isFocused && (
+            <div className="button-wrapper">
+              <IconButton
+                role="button"
+                active={isPinned}
+                className="pin-btn"
+                onClick={togglePinned}
+              >
+                {isPinned ? <PinnedIcon /> : <UnpinnedIcon />}
+              </IconButton>
+              <div role="button" className="reset-btn" onClick={resetForm}>
+                Reset
+              </div>
+              <div role="button" className="close-btn" onClick={handleBlur}>
+                Close
+              </div>
             </div>
-            <div role="button" className="close-btn" onClick={handleBlur}>
-              Close
-            </div>
-          </div>
-        )}
-      </form>
+          )}
+        </form>
+      )}
     </AddNoteStyled>
   )
 }
