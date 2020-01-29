@@ -9,7 +9,7 @@ import {
 
 const SearchBarStyled = styled.label`
   grid-area: search;
-  background: white;
+  background: ${props => props.theme.cardBackground};
   border-radius: 0.5rem;
   overflow: hidden;
   padding: 0 1rem;
@@ -51,7 +51,7 @@ const SearchBarStyled = styled.label`
     }
 
     &.show {
-      opacity: 0.5;
+      opacity: 0.8;
       transform: translateY(-50%) translateX(-2rem);
       color: ${props => props.theme.primaryText};
 

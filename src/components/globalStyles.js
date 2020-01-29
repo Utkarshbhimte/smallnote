@@ -3,6 +3,12 @@ import { createGlobalStyle } from "styled-components"
 export const GlobalStyles = createGlobalStyle`
 	body{
 		background-color: ${props => props.theme.background};
+		color: ${props => props.theme.primaryText};
+	}
+
+	input{
+		background-color: transparent;
+		color: ${props => props.theme.primaryText};
 	}
 
 	/* contentEditable styles */
