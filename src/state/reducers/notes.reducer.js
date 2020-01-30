@@ -41,7 +41,6 @@ export const notesReducer = (
       }
 
       localStorage.setItem("notesReducer", JSON.stringify(newState))
-      console.log("TCL: newState", newState)
       return newState
     }
 

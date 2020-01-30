@@ -23,3 +23,9 @@ export const getWindow = () => (typeof window !== "undefined" && window) || null
 //   getWindow().matchMedia("(prefers-color-scheme: dark)").matches
 //     ? "dark"
 //     : "light"
+
+export const CONSTANTS = {
+  gridRowGap: 10,
+  gridRowDenominator: 27,
+  gridColDenominator: 250,
+}

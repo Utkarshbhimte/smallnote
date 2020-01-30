@@ -27,6 +27,7 @@ const NoteModalStyled = styled.div`
     > div {
       padding-left: 0;
       padding-right: 0;
+      padding-bottom: 1rem;
 
       .note-content {
         min-height: calc(50vh - 4rem);

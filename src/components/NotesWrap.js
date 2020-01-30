@@ -2,6 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { useSelector } from "react-redux"
 import { NoteCard } from "./NoteCard"
+import { CONSTANTS } from "../utils"
 
 export const NoteCardGridHeader = styled.div`
   margin-bottom: 0.5rem;
@@ -13,18 +14,14 @@ export const NoteCardGridHeader = styled.div`
 `
 
 export const NoteCardGrid = styled.div`
-  /* display: grid;
-  grid-gap: 1rem; */
-  /* grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  grid-gap: 1rem; */
-  /* grid-auto-flow: dense; */
-
   margin: 0.5rem 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-  grid-auto-rows: min-content;
-  grid-gap: 1rem;
-  grid-auto-flow: dense;
+  grid-gap: ${CONSTANTS.gridRowGap}px;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(${CONSTANTS.gridColDenominator}px, 1fr)
+  );
+  grid-auto-rows: ${CONSTANTS.gridRowDenominator}px;
 `
 
 export const NotesWrap = () => {

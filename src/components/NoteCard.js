@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import styled from "styled-components"
 import { useSelector, useDispatch } from "react-redux"
 import { IconButton } from "../components/IconButton"
@@ -13,20 +13,34 @@ import PinnedIcon from "../images/pinned-icon.svg"
 import UnpinnedIcon from "../images/unpinned-icon.svg"
 import DeleteIcon from "../images/delete-icon.svg"
 import ArchiveIcon from "../images/archive-icon.svg"
+import { CONSTANTS } from "../utils"
 
 const NoteCardStyled = styled.div`
-  width: 100%;
+  /* width: 100%; */
   background-color: ${props => props.theme.cardBackground};
   border-radius: 0.5rem;
-  padding: 1rem;
-  display: grid;
-  grid-template-rows: 1fr min-content;
-  grid-gap: 0.5rem;
+  padding: 1rem 1rem 0.2rem;
+
   font-size: 0.8rem;
   line-height: 1.2rem;
+  grid-row-end: span
+    ${props =>
+      Math.ceil(
+        (props.contentHeight +
+          CONSTANTS.gridRowGap +
+          CONSTANTS.gridRowDenominator) /
+          (CONSTANTS.gridRowDenominator + CONSTANTS.gridRowGap)
+      )};
+
+  .content-wrapper {
+    display: grid;
+    position: relative;
+    grid-template-rows: 1fr 27px;
+    grid-gap: 0.5rem;
+    min-height: 100%;
+  }
 
   .action-wrapper {
-    position: relative;
     height: 27px;
   }
 
@@ -38,8 +52,7 @@ const NoteCardStyled = styled.div`
 
   .action-btn {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 0;
     opacity: 0;
     will-change: opacity;
     transition: all 0.3s ease-in-out;
@@ -68,11 +81,14 @@ const NoteCardStyled = styled.div`
 
 export const NoteCard = React.memo(({ noteId, closeModal, editable }) => {
   const inputRef = useRef()
+  const contentRef = useRef()
   const dispatch = useDispatch()
 
   const { noteData } = useSelector(state => ({
     noteData: state.notes.data[noteId],
   }))
+
+  const [contentHeight, setContentHeight] = useState(0)
 
   const togglePinned = event => {
     event.stopPropagation()
@@ -124,56 +140,66 @@ export const NoteCard = React.memo(({ noteId, closeModal, editable }) => {
     }
   }
 
+  useEffect(() => {
+    setContentHeight(
+      (contentRef.current &&
+        contentRef.current.getBoundingClientRect().height) ||
+        0
+    )
+  }, [noteData])
+
   return (
-    <NoteCardStyled onClick={handleCardClick}>
-      <div className="note-content">
-        {(noteData.title || editable) && (
-          <div
-            contentEditable={editable}
-            placeholder="Title"
-            onKeyPress={handleTitleChange}
-            className="title-input"
-            dangerouslySetInnerHTML={{ __html: noteData.title }}
-          />
-        )}
-        {(noteData.text || editable) && (
-          <div
-            contentEditable={editable}
-            placeholder="Add a note"
-            ref={inputRef}
-            onInput={handleNoteChange}
-            className={`body-input ${!noteData.title.length && "no-title"}`}
-            dangerouslySetInnerHTML={{ __html: noteData.text }}
-          />
-        )}
-      </div>
+    <NoteCardStyled onClick={handleCardClick} contentHeight={contentHeight}>
+      <div className="content-wrapper" ref={contentRef}>
+        <div className="note-content">
+          {(noteData.title || editable) && (
+            <div
+              contentEditable={editable}
+              placeholder="Title"
+              onKeyPress={handleTitleChange}
+              className="title-input"
+              dangerouslySetInnerHTML={{ __html: noteData.title }}
+            />
+          )}
+          {(noteData.text || editable) && (
+            <div
+              contentEditable={editable}
+              placeholder="Add a note"
+              ref={inputRef}
+              onInput={handleNoteChange}
+              className={`body-input ${!noteData.title.length && "no-title"}`}
+              dangerouslySetInnerHTML={{ __html: noteData.text }}
+            />
+          )}
+        </div>
 
-      <div className="action-wrapper">
-        <IconButton
-          role="button"
-          active={noteData.pinned}
-          className="action-btn pin-btn"
-          onClick={togglePinned}
-        >
-          {noteData.pinned ? <PinnedIcon /> : <UnpinnedIcon />}
-        </IconButton>
+        <div className="action-wrapper">
+          <IconButton
+            role="button"
+            active={noteData.pinned}
+            className="action-btn pin-btn"
+            onClick={togglePinned}
+          >
+            {noteData.pinned ? <PinnedIcon /> : <UnpinnedIcon />}
+          </IconButton>
 
-        <IconButton
-          role="button"
-          active={noteData.archived}
-          className="action-btn archive-btn"
-          onClick={toggleArchived}
-        >
-          <ArchiveIcon />
-        </IconButton>
+          <IconButton
+            role="button"
+            active={noteData.archived}
+            className="action-btn archive-btn"
+            onClick={toggleArchived}
+          >
+            <ArchiveIcon />
+          </IconButton>
 
-        <IconButton
-          role="button"
-          className="action-btn delete-btn"
-          onClick={handleDeleteIconClick}
-        >
-          <DeleteIcon />
-        </IconButton>
+          <IconButton
+            role="button"
+            className="action-btn delete-btn"
+            onClick={handleDeleteIconClick}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </div>
       </div>
     </NoteCardStyled>
   )

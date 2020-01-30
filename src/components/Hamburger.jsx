@@ -1,5 +1,5 @@
 import React from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import { toggleSidebar } from "../state/actions/ui.actions"
 
@@ -29,16 +29,26 @@ const HamburgerStyled = styled.div`
     -webkit-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
+
+    &:first-child {
+      transform: ${props =>
+        props.active && "scaleX(0.5) rotateZ(-35deg) translate(-9px,-4.5px)"};
+    }
+    &:last-child {
+      transform: ${props =>
+        props.active && "scaleX(0.5) rotateZ(35deg) translate(-9px,4.5px)"};
+    }
   }
 `
 
 const Hamburger = () => {
   const dispatch = useDispatch()
+  const { active } = useSelector(state => ({ active: state.ui.sidebar }))
 
   const handleClick = () => dispatch(toggleSidebar())
 
   return (
-    <HamburgerStyled role="button" onClick={handleClick}>
+    <HamburgerStyled active={active} role="button" onClick={handleClick}>
       <span className="line"></span>
       <span className="line"></span>
       <span className="line"></span>
