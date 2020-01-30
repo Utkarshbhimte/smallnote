@@ -64,6 +64,7 @@ const SidebarStyled = styled.div`
         border: none;
         background: transparent;
         display: flex;
+        cursor: pointer;
 
         svg {
           height: 0.8rem;

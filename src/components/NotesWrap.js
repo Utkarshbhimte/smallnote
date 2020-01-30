@@ -128,13 +128,12 @@ export const NotesWrap = () => {
     noteSections = noteSections.filter(section => !!section.notes.length)
     return { noteSections }
   })
-  console.log({ noteSections })
   return (
     <>
       {/* default view */}
       {noteSections.map(section => (
         <React.Fragment key={section.key}>
-          {section.label && (
+          {section.label && noteSections.length > 1 && (
             <NoteCardGridHeader>{section.label}</NoteCardGridHeader>
           )}
           <NoteCardGrid>
