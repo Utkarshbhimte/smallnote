@@ -2,7 +2,11 @@ import React, { useEffect, useRef } from "react"
 import { useDispatch } from "react-redux"
 import styled from "styled-components"
 import { useSelector } from "react-redux"
-import { resetActiveNote, updateNote } from "../state/actions/notes.actions"
+import {
+  resetActiveNote,
+  updateNote,
+  deleteNote,
+} from "../state/actions/notes.actions"
 import { NoteCard } from "./NoteCard"
 
 const NoteModalStyled = styled.div`
@@ -31,6 +35,8 @@ const NoteModalStyled = styled.div`
 
       .note-content {
         min-height: calc(50vh - 4rem);
+        display: grid;
+        grid-template-rows: min-content 1fr;
       }
 
       .action-btn {
@@ -60,15 +66,22 @@ const NoteModal = () => {
     const title = cardRef.current.querySelector(".title-input").innerHTML
     const text = cardRef.current.querySelector(".body-input").innerHTML
 
-    dispatch(
-      updateNote({
-        noteData: {
-          ...activeNote,
-          title,
-          text,
-        },
-      })
-    )
+    const noteData = { ...activeNote }
+
+    if ((title && !!title.length) || (text && !!text.length)) {
+      dispatch(
+        updateNote({
+          noteData: {
+            ...noteData,
+            title,
+            text,
+          },
+        })
+      )
+    } else {
+      dispatch(deleteNote({ noteId: noteData.id }))
+    }
+
     dispatch(resetActiveNote())
   }
 
