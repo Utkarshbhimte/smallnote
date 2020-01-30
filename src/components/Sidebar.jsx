@@ -9,6 +9,7 @@ import {
 import { getWindow } from "../utils"
 
 import CloseIcon from "../images/close.svg"
+import { resetSearchTerm } from "../state/actions/search.actions"
 
 const SidebarStyled = styled.div`
   position: fixed;
@@ -97,6 +98,7 @@ const Sidebar = () => {
   const handleTabClick = event => {
     const selectedTab = event.currentTarget.getAttribute("data-value")
     dispatch(updateActiveTab({ activeTab: selectedTab }))
+    dispatch(resetSearchTerm())
 
     if (getWindow() && getWindow().innerWidth <= 600) {
       setTimeout(() => {

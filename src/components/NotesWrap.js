@@ -124,7 +124,7 @@ export const NotesWrap = () => {
     <>
       {/* default view */}
       {noteSections.map(section => (
-        <>
+        <React.Fragment key={section.key}>
           {section.label && (
             <NoteCardGridHeader>{section.label}</NoteCardGridHeader>
           )}
@@ -133,7 +133,7 @@ export const NotesWrap = () => {
               <NoteCard key={noteId} noteId={noteId} />
             ))}
           </NoteCardGrid>
-        </>
+        </React.Fragment>
       ))}
     </>
   )
