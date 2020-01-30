@@ -6,6 +6,7 @@ import {
   updateSearchTerm,
   resetSearchTerm,
 } from "../state/actions/search.actions"
+import { resetActiveTab, closeSidebar } from "../state/actions/ui.actions"
 
 const SearchBarStyled = styled.label`
   grid-area: search;
@@ -74,6 +75,8 @@ const SearchBar = () => {
   const handleChange = event => {
     const searchTerm = event.target.value
     dispatch(updateSearchTerm({ searchTerm }))
+    dispatch(resetActiveTab())
+    dispatch(closeSidebar())
   }
 
   const resetSearch = () => {

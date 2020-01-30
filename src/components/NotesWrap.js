@@ -24,87 +24,117 @@ export const NoteCardGrid = styled.div`
   grid-auto-rows: ${CONSTANTS.gridRowDenominator}px;
 `
 
+const sectionCaptionMapper = {
+  archived: "Archived",
+  pinned: "Pinned",
+  others: "Others",
+}
+
 export const NotesWrap = () => {
-  const { activeList, activeTab, pinnedNotes, otherNotes } = useSelector(
-    state => {
-      const {
-        ui: { activeTab },
-        search: { searchTerm },
-      } = state
+  const { noteSections } = useSelector(state => {
+    const {
+      ui: { activeTab },
+      search: { searchTerm },
+    } = state
 
-      let { list } = state.notes
+    let { list } = state.notes
+    let noteSections = []
 
-      list = list.filter(noteId => {
+    if (searchTerm && !!searchTerm.length) {
+      const filteredNotes = list.filter(noteId => {
         const noteData = state.notes.data[noteId]
-
-        // filtering by active tab
-        const tabCondition = !activeTab || noteData[activeTab]
-
-        // filtering by active search
-        const searchCondition =
-          !(searchTerm && !!searchTerm.length) ||
-          (noteData.title && noteData.title.includes(searchTerm)) ||
-          (noteData.text && noteData.text.includes(searchTerm))
-
-        return tabCondition && searchCondition
+        return (
+          (noteData.title &&
+            noteData.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (noteData.text &&
+            noteData.text.toLowerCase().includes(searchTerm.toLowerCase()))
+        )
       })
 
-      // chunking the non archived notes between pinned and others
-      const [pinnedNotes, otherNotes] = list
-        .filter(a => !!state.notes.data[a] && !state.notes.data[a].archived)
-        .reduce(
-          (total, curr) => {
-            const data = state.notes.data[curr]
+      const noteSectionsMap = filteredNotes.reduce(
+        (total, currNoteId) => {
+          const noteData = state.notes.data[currNoteId]
 
-            total = data.pinned
-              ? [[...total[0], curr], total[1]]
-              : [total[0], [...total[1], curr]]
-            return total
-          },
-          [[], []]
-        )
+          if (noteData.archived) {
+            total.archived = [currNoteId, ...(total.archived || [])]
+          } else if (noteData.pinned) {
+            total.pinned = [currNoteId, ...(total.pinned || [])]
+          } else {
+            total.others = [currNoteId, ...(total.others || [])]
+          }
 
-      return { activeList: list || [], activeTab, pinnedNotes, otherNotes }
+          return total
+        },
+        {
+          pinned: [],
+          others: [],
+          archived: [],
+        }
+      )
+
+      noteSections = Object.keys(noteSectionsMap).map(sectionKey => ({
+        key: sectionKey,
+        label: sectionCaptionMapper[sectionKey],
+        notes: noteSectionsMap[sectionKey],
+      }))
+    } else if (!!activeTab) {
+      const filteredNotes = list.filter(noteId => {
+        const noteData = state.notes.data[noteId]
+        return noteData[activeTab]
+      })
+
+      noteSections = [
+        {
+          key: activeTab,
+          label: null,
+          notes: filteredNotes,
+        },
+      ]
+    } else {
+      const nonArchivedNotes = list.filter(noteId => {
+        const noteData = state.notes.data[noteId]
+        return !noteData.archived
+      })
+
+      const noteSectionsMap = nonArchivedNotes.reduce(
+        (total, currNoteId) => {
+          const noteData = state.notes.data[currNoteId]
+          if (noteData.pinned) {
+            total.pinned = [currNoteId, ...(total.pinned || [])]
+          } else {
+            total.others = [currNoteId, ...(total.others || [])]
+          }
+          return total
+        },
+        { pinned: [], others: [] }
+      )
+
+      noteSections = Object.keys(noteSectionsMap).map(sectionKey => ({
+        key: sectionKey,
+        label: sectionCaptionMapper[sectionKey],
+        notes: noteSectionsMap[sectionKey],
+      }))
     }
-  )
+
+    noteSections = noteSections.filter(section => !!section.notes.length)
+    return { noteSections }
+  })
 
   return (
     <>
-      {/* filtered view */}
-      {activeTab ? (
-        <NoteCardGrid>
-          {activeList.map(noteId => (
-            <NoteCard key={noteId} noteId={noteId} />
-          ))}
-        </NoteCardGrid>
-      ) : (
+      {/* default view */}
+      {noteSections.map(section => (
         <>
-          {/* default view */}
-          {pinnedNotes && !!pinnedNotes.length && (
-            <>
-              <NoteCardGridHeader>Pinned</NoteCardGridHeader>
-              <NoteCardGrid>
-                {pinnedNotes.map(noteId => (
-                  <NoteCard key={noteId} noteId={noteId} />
-                ))}
-              </NoteCardGrid>
-            </>
+          {section.label && (
+            <NoteCardGridHeader>{section.label}</NoteCardGridHeader>
           )}
-
-          {otherNotes && !!otherNotes.length && (
-            <>
-              <NoteCardGridHeader>Active</NoteCardGridHeader>
-              <NoteCardGrid>
-                {otherNotes
-                  .filter(a => !a.pinned)
-                  .map(noteId => (
-                    <NoteCard key={noteId} noteId={noteId} />
-                  ))}
-              </NoteCardGrid>
-            </>
-          )}
+          <NoteCardGrid>
+            {section.notes.map(noteId => (
+              <NoteCard key={noteId} noteId={noteId} />
+            ))}
+          </NoteCardGrid>
         </>
-      )}
+      ))}
     </>
   )
 }

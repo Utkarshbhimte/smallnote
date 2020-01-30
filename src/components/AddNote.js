@@ -101,9 +101,11 @@ export const AddNote = () => {
   const inputRef = useRef()
   const titleInputRef = useRef()
 
-  const { defaultPinned, isInArchived } = useSelector(state => ({
+  const { defaultPinned, hideForm } = useSelector(state => ({
     defaultPinned: state.ui.activeTab === "pinned",
-    isInArchived: state.ui.activeTab === "archived",
+    hideForm:
+      state.ui.activeTab === "archived" ||
+      (state.search.searchTerm && state.search.searchTerm.length),
   }))
 
   const [isFocused, setIsFocused] = useState(false)
@@ -196,7 +198,7 @@ export const AddNote = () => {
 
   return (
     <AddNoteStyled expand={isFocused}>
-      {!isInArchived && (
+      {!hideForm && (
         <form
           onSubmit={handleSubmit}
           className="input-wrapper"
