@@ -128,6 +128,7 @@ export const NotesWrap = () => {
     noteSections = noteSections.filter(section => !!section.notes.length)
     return { noteSections }
   })
+
   return (
     <>
       {/* default view */}

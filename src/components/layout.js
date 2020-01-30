@@ -11,6 +11,7 @@ import { Page } from "./sharedStyled"
 import Sidebar from "./Sidebar"
 import NoteModal from "./NoteModal"
 import MultipleThemeProvider from "./MultipleThemeProvider"
+import Notification from "./notification"
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -32,6 +33,7 @@ const Layout = ({ children }) => {
       </Page>
       <GlobalStyles />
       <NoteModal />
+      <Notification />
     </MultipleThemeProvider>
   )
 }

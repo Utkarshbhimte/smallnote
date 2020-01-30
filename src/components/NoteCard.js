@@ -14,6 +14,7 @@ import UnpinnedIcon from "../images/unpinned-icon.svg"
 import DeleteIcon from "../images/delete-icon.svg"
 import ArchiveIcon from "../images/archive-icon.svg"
 import { CONSTANTS } from "../utils"
+import { setNotification } from "../state/actions/ui.actions"
 
 const NoteCardStyled = styled.div`
   /* width: 100%; */
@@ -93,6 +94,14 @@ export const NoteCard = React.memo(({ noteId, closeModal, editable }) => {
 
   const togglePinned = event => {
     event.stopPropagation()
+
+    dispatch(
+      setNotification({
+        notificationText: noteData.pinned
+          ? "The Note has been unpinned"
+          : "The Note has been pinned",
+      })
+    )
     dispatch(
       updateNote({
         noteData: { ...noteData, pinned: !noteData.pinned, archived: false },
@@ -102,6 +111,13 @@ export const NoteCard = React.memo(({ noteId, closeModal, editable }) => {
 
   const toggleArchived = event => {
     event.stopPropagation()
+    dispatch(
+      setNotification({
+        notificationText: noteData.archived
+          ? "The Note has been moved out from Archive"
+          : "The Note has been moved to Archive",
+      })
+    )
     dispatch(
       updateNote({
         noteData: {
@@ -115,6 +131,12 @@ export const NoteCard = React.memo(({ noteId, closeModal, editable }) => {
 
   const handleDeleteIconClick = event => {
     event.stopPropagation()
+
+    dispatch(
+      setNotification({
+        notificationText: "The Note has been deleted",
+      })
+    )
     dispatch(deleteNote({ noteId: noteData.id }))
 
     closeModal && closeModal()

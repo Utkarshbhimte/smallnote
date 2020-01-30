@@ -5,6 +5,9 @@ export const uiActions = {
   UPDATE_ACTIVE_TAB: "UPDATE_ACTIVE_TAB",
   RESET_ACTIVE_TAB: "RESET_ACTIVE_TAB",
 
+  SET_NOTIFICATION: "SET_NOTIFICATION",
+  HIDE_NOTIFICATION: "HIDE_NOTIFICATION",
+
   SET_THEME: "SET_THEME",
 }
 
@@ -31,4 +34,12 @@ export const resetActiveTab = () => ({
 export const setTheme = ({ selectedTheme }) => ({
   type: uiActions.SET_THEME,
   payload: { selectedTheme },
+})
+
+export const setNotification = ({ notificationText }) => ({
+  type: uiActions.SET_NOTIFICATION,
+  payload: { notificationText },
+})
+export const hideNotification = () => ({
+  type: uiActions.HIDE_NOTIFICATION,
 })

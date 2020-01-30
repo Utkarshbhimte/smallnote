@@ -11,6 +11,7 @@ const initialState = {
   sidebar: !!defaultActiveTab,
   activeTab: defaultActiveTab || null,
   selectedTheme: defaultSelectedTheme || "dark",
+  notificationText: null,
 }
 
 export const uiReducer = (state = initialState, action) => {
@@ -44,6 +45,13 @@ export const uiReducer = (state = initialState, action) => {
       getWindow() &&
         getWindow().localStorage.setItem("selectedTheme", payload.selectedTheme)
       return { ...state, selectedTheme: payload.selectedTheme }
+    }
+
+    case uiActions.SET_NOTIFICATION: {
+      return { ...state, notificationText: payload.notificationText }
+    }
+    case uiActions.HIDE_NOTIFICATION: {
+      return { ...state, notificationText: null }
     }
 
     default:
