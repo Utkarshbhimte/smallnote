@@ -24,6 +24,15 @@ export const NoteCardGrid = styled.div`
   grid-auto-rows: ${CONSTANTS.gridRowDenominator}px;
 `
 
+const EmptyState = styled.div`
+  padding: 4rem 0;
+  text-align: center;
+  user-select: none;
+  color: ${props => props.theme.primaryText};
+  opacity: 0.6;
+  font-size: 1rem;
+`
+
 const sectionCaptionMapper = {
   archived: "Archived",
   pinned: "Pinned",
@@ -119,7 +128,7 @@ export const NotesWrap = () => {
     noteSections = noteSections.filter(section => !!section.notes.length)
     return { noteSections }
   })
-
+  console.log({ noteSections })
   return (
     <>
       {/* default view */}
@@ -135,6 +144,13 @@ export const NotesWrap = () => {
           </NoteCardGrid>
         </React.Fragment>
       ))}
+
+      {/* Empty State */}
+      {!noteSections.length && (
+        <EmptyState>
+          <span>There are no notes</span>
+        </EmptyState>
+      )}
     </>
   )
 }
